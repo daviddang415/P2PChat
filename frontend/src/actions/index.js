@@ -9,6 +9,7 @@ import callEndedActions from "./callEndedActions";
 import idToCallActions from "./idToCallActions";
 import videoOnActions from "./videoOnActions";
 import audioOnActions from "./audioOnActions";
+import showSidebarActions from "./showSidebarActions";
 
 const allActions = {
     receivingCallActions,
@@ -21,7 +22,8 @@ const allActions = {
     callEndedActions,
     idToCallActions,
     videoOnActions,
-    audioOnActions
+    audioOnActions,
+    showSidebarActions
 }
 
 export default allActions;

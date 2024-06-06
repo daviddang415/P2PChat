@@ -13,6 +13,9 @@ import allActions from './actions';
 
 import VideocamIcon from '@material-ui/icons/Videocam';
 import VideocamOffIcon from '@material-ui/icons/VideocamOff';
+import MenuIcon from '@material-ui/icons/Menu';
+import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+
 
 import MicIcon from '@material-ui/icons/Mic';
 import MicOffIcon from '@material-ui/icons/MicOff';
@@ -31,6 +34,7 @@ function App() {
   const stream = useSelector(state => state.stream);
   const videoOn = useSelector(state => state.videoOn);
   const audioOn = useSelector(state => state.audioOn);
+  const showSidebar = useSelector(state => state.showSidebar);
   
 
   const myVideo = useRef();
@@ -179,52 +183,91 @@ function App() {
       {/*<h1 style={{textAlign:"center", color:"fff"}}>P2P Chat</h1>*/}
       <div className='container'>
         <div className='video-container'>
-          <div className="video">
-            {stream && <video playsInline muted ref={myVideo} autoPlay style={{width:"300px"}}></video>}
+          <div className={callAccepted && !callEnded ? "myVideo active" : "myVideo"}>
+            {stream && <video playsInline muted ref={myVideo} autoPlay></video>}
           </div>
-          <div className="video">
-            {callAccepted && !callEnded ? <video playsInline muted ref={userVideo} autoPlay style={{width:"300px"}}></video>
+          <div className="userVideo">
+            {callAccepted && !callEnded ? <video playsInline muted ref={userVideo} autoPlay></video>
             : null}
           </div>
         </div>
-      </div>
 
-      <div className='myId'>
-        <TextField
-          id="filled-basic"
-          label="Name"
-          variant="filled"
-          value={name}
-          onChange={(e) => dispatch(allActions.nameActions.setName(e.target.value))}
-          style={{ marginBottom: "20px" }}
-        />
+        {callAccepted && !callEnded ? 
+          null 
+          :
+          <div className="menu">
+            {!showSidebar &&
+            <div className='menuBtn'>
+              <IconButton color="primary" aria-label="call" onClick={() => {!(receivingCall && !callAccepted) && dispatch(allActions.showSidebarActions.setShowSidebar(!showSidebar))}}>
+                <MenuIcon fontSize='large'/>
+              </IconButton>
+            </div>
+            }
 
-        <CopyToClipboard text={me} style={{ marginBottom: "2rem" }}>
-          <Button variant="contained" color="primary" startIcon={<AssignmentIcon font="large"></AssignmentIcon>}>
-            Copy ID
-          </Button>
-        </CopyToClipboard>
-
-        <TextField
-          id="filled-basic"
-          label="ID to call"
-          variant="filled"
-          value={idToCall}
-          onChange={(e) => dispatch(allActions.idToCallActions.setIdToCall(e.target.value))}
-          style={{ marginBottom: "20px" }}
-        />
-
-        {receivingCall && !callAccepted ? (
-          <div className='caller'>
-            <h1>{name} is calling...</h1>
-            <Button variant="contained" color="primary" onClick={answerCall}>
-              Answer
-            </Button>
+            <div className={showSidebar ? 'myId active': 'myId'}>
+              <div className='menuBtn'>
+                  <IconButton color="primary" aria-label="call" onClick={() => {!(receivingCall && !callAccepted) && dispatch(allActions.showSidebarActions.setShowSidebar(!showSidebar))}}>
+                    <MenuOpenIcon fontSize='large'/>
+                  </IconButton>
+                </div>
+              
+              <TextField
+                id="filled-basic"
+                label="Name"
+                variant="filled"
+                value={name}
+                onChange={(e) => dispatch(allActions.nameActions.setName(e.target.value))}
+                style={{ marginTop: "70px", marginBottom: "20px" }}
+            />
+    
+            <CopyToClipboard text={me} style={{ marginBottom: "20px" }}>
+              <Button variant="contained" color="primary" startIcon={<AssignmentIcon font="large"></AssignmentIcon>}>
+                Copy ID
+              </Button>
+            </CopyToClipboard>
+    
+            <TextField
+              id="filled-basic"
+              label="ID to call"
+              variant="filled"
+              value={idToCall}
+              onChange={(e) => dispatch(allActions.idToCallActions.setIdToCall(e.target.value))}
+              style={{ marginBottom: "20px" }}
+            />
           </div>
-        ) : null}
+        </div>
+        }
 
-        <div className="controlPanel">
+        {callAccepted && !callEnded ? 
+        <div className="controlPanelContainer">
+          <div className="controlPanel">
+            <div className="cameraButton">
+              <IconButton color="primary" aria-label="call" onClick={() => {stopVideoOnly(stream)}}>
+                  {videoOn ? <VideocamIcon fontSize='large'/> : <VideocamOffIcon fontSize="large"/>}
+              </IconButton>
+            </div>
 
+            <div className="audioButton">
+              <IconButton color="primary" aria-label="call" onClick={() => {stopAudioOnly(stream)}}>
+                {audioOn ? <MicIcon fontSize='large'/> : <MicOffIcon fontSize="large"/>}
+              </IconButton>
+            </div>
+
+            <div className='call-button'>
+              {callAccepted && !callEnded ? (
+                <IconButton color="secondary" variant="contained" aria-label="end" onClick={leaveCall}>
+                    <PhoneIcon fontSize='large'/>
+                </IconButton>
+              ) : 
+              (<IconButton color="primary" aria-label="call" onClick={() => callUser(idToCall)}>
+                <PhoneIcon fontSize="large"/>  
+              </IconButton>)}
+              {/*idToCall*/}
+            </div>
+          </div>
+        </div>
+        :
+        <div className="controlPanel2">
           <div className="cameraButton">
             <IconButton color="primary" aria-label="call" onClick={() => {stopVideoOnly(stream)}}>
                 {videoOn ? <VideocamIcon fontSize='large'/> : <VideocamOffIcon fontSize="large"/>}
@@ -248,8 +291,23 @@ function App() {
             </IconButton>)}
             {/*idToCall*/}
           </div>
+        </div> 
+        }
 
-        </div>
+        {receivingCall && !callAccepted ? 
+          (<div id="popup1" class="caller overlay">
+              <div class="popup">
+                <h1>{name} is calling...</h1>
+                <div className="content">
+                  <Button variant="contained" color="primary" onClick={answerCall}>
+                    Answer
+                  </Button>
+                </div>
+              </div>
+          </div>) 
+          : 
+          null
+        }
       </div>
     </div>
   );

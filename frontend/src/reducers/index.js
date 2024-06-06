@@ -9,6 +9,7 @@ import streamReducer from "./stream";
 import callerSignalReducer from "./callerSignal";
 import videoOnReducer from "./videoOn";
 import audioOnReducer from "./audioOn";
+import showSidebarReducer from "./showSidebar";
 
 import {combineReducers} from 'redux';
 
@@ -23,7 +24,8 @@ const allReducers = combineReducers({
     stream: streamReducer,
     callerSignal: callerSignalReducer,
     videoOn: videoOnReducer,
-    audioOn: audioOnReducer
+    audioOn: audioOnReducer,
+    showSidebar: showSidebarReducer
 });
 
 export default allReducers;
