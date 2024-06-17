@@ -10,6 +10,10 @@ import idToCallActions from "./idToCallActions";
 import videoOnActions from "./videoOnActions";
 import audioOnActions from "./audioOnActions";
 import showSidebarActions from "./showSidebarActions";
+import showChatActions from "./showChatActions";
+import messageActions from "./messageActions";
+import messageLogActions from "./messageLogActions";
+import isNewMessageActions from "./isNewMessageActions";
 
 const allActions = {
     receivingCallActions,
@@ -23,7 +27,11 @@ const allActions = {
     idToCallActions,
     videoOnActions,
     audioOnActions,
-    showSidebarActions
+    showSidebarActions,
+    showChatActions,
+    messageActions,
+    messageLogActions,
+    isNewMessageActions
 }
 
 export default allActions;

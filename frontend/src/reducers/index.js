@@ -10,6 +10,10 @@ import callerSignalReducer from "./callerSignal";
 import videoOnReducer from "./videoOn";
 import audioOnReducer from "./audioOn";
 import showSidebarReducer from "./showSidebar";
+import showChatReducer from "./showChat";
+import messageReducer from "./message";
+import messageLogReducer from "./messageLog";
+import isNewMessageReducer from "./isNewMessage";
 
 import {combineReducers} from 'redux';
 
@@ -25,7 +29,11 @@ const allReducers = combineReducers({
     callerSignal: callerSignalReducer,
     videoOn: videoOnReducer,
     audioOn: audioOnReducer,
-    showSidebar: showSidebarReducer
+    showSidebar: showSidebarReducer,
+    showChat: showChatReducer,
+    message: messageReducer,
+    messageLog: messageLogReducer,
+    isNewMessageReducer: isNewMessageReducer
 });
 
 export default allReducers;

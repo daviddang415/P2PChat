@@ -10,6 +10,7 @@ body, html {
 
 body {
   min-height: 300px;
+  overflow-x: hidden;
   overflow-y: hidden;
 }
 
@@ -18,6 +19,7 @@ body {
   background-color: black;
 }
 
+/* My Video and User Video */
 .myVideo {
   height: 100vh;
 }
@@ -43,10 +45,10 @@ body {
 
 .myVideo.active video {
   position: fixed;
-  top: 3vw;
-  left: 3vw;
-  width: 15vw; 
-  height: 15vw;
+  top: 15px;
+  left: 20px;
+  width: 12vw; 
+  height: 12vw;
   transition: 350ms;
   z-index: 1;
   border: solid aliceblue 3px;
@@ -59,6 +61,7 @@ body {
   height: 300px;
 }
 
+/* Camera, Audio, and Phone Call Control Panel */
 .controlPanelContainer {
   position: fixed;  
   left: 0;
@@ -84,7 +87,6 @@ body {
   border-radius: 15px;
   background-color: white;
 
-  
   visibility: hidden;
   opacity: 0;
   transition: 
@@ -94,6 +96,7 @@ body {
 .controlPanelContainer:hover .controlPanel{
   visibility: visible;
   opacity: 1;
+  /* border: solid black; */
 }
 
 .controlPanel2 {
@@ -109,6 +112,7 @@ body {
   padding: 5px; 
   margin: 0 auto;
   background-color: white;
+  /* border: solid black; */
 }
 
 .overlay {
@@ -121,9 +125,10 @@ body {
   transition: opacity 500ms;
   visibility: visible;
   opacity: 1;
+  /* border: solid black; */
 }
 
-
+/* Menu and Sidebar */
 .menu {
   position: absolute;
   top: 0%;
@@ -183,19 +188,12 @@ body {
   transition: 1s ease-in-out;
 }
 
-/*
-.overlay:target {
-  visibility: visible;
-  opacity: 1;
-}
-*/
-
 .popup {
   margin: 20% auto;
   padding: 20px;
   background: #fff;
-  border-radius: 5px;
-  width: 30%;
+  border-radius: 10px;
+  width: 300px;
   position: relative;
 }
 
@@ -205,23 +203,146 @@ body {
   font-family: Tahoma, Arial, sans-serif;
 }
 
-/*
-.popup .close {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  transition: all 200ms;
-  font-size: 30px;
-  font-weight: bold;
-  text-decoration: none;
-  color: #333;
-}
-.popup .close:hover {
-  color: #06D85F;
-}
-*/
-
 .popup .content {
   max-height: 30%;
   overflow: auto;
+}
+
+/* Chat and Chatbox */
+.chat {
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+.chatSidebar {
+  position: fixed;
+  background-color: white;
+  width: 300px;
+  height: 100vh;
+  top: 0;
+  right: -100%;
+  transition: 850ms;
+}
+
+.chatSidebar.active {
+  /*
+  display: flex;
+  flex-direction: column;
+  */
+  right: 0;
+  transition: 350ms;
+}
+
+.openChatIcon {
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+
+.chatBoxContainer {
+  position: relative;
+  margin-top: 60px;
+  margin-left: 10px;
+  margin-right: 10px;
+  height: 90vh;
+}
+
+.chatBox {
+  position: relative;
+  border: solid black;
+  border-bottom: none;
+  background-color: aliceblue;
+  height: 91%;
+  border-top-left-radius: 15px;
+  /* border-radius: 15px; */
+  padding-left: 0px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.chatSend {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height: 60px;
+}
+
+.inputField {
+  width: 85%;
+  height: 100%;
+  /* border-radius: 15px; */
+  border-bottom-left-radius: 15px;
+  border: solid black;
+  font-size: 16px;
+  padding-left: 16px;
+}
+
+.inputButton {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  border: solid black;
+  background-color: lightgrey;
+  border-bottom-right-radius: 15px;
+  height: 100%;
+  font-size: 16px;
+}
+
+.inputButton:hover {
+  background-color: grey;
+  cursor: pointer;
+}
+
+ul {
+  list-style: none;
+}
+
+.messageBubble {
+  width: 93%;
+  margin-top: 12px;
+  margin-bottom: 12px;
+  border-radius: .4em;
+  padding: 12px;
+  /* max-height: auto; */
+}
+
+.user {
+  position: relative;
+  border: solid grey;
+  background-color: grey;
+  margin-left: 14px;
+}
+
+.user:before {
+  position: absolute;
+  left: -16px;
+  top: 11px;
+  content:"";
+  width: 0;
+	height: 0;
+	border: 20px solid transparent;
+	border-right-color: grey;
+	border-left: 0;
+	border-bottom: 0;
+}
+
+.my {
+  position: relative;
+  border: solid rgb(122, 184, 253);
+  background-color: rgb(122, 184, 253);
+  margin-left: 5px;
+}
+
+.my:before {
+  position: absolute;
+  right: -17px;
+  top: 10px;
+  content:"";
+	width: 0;
+	height: 0;
+	border: 20px solid transparent;
+	border-left-color: rgb(122, 184, 253);
+	border-right: 0;
+	border-bottom: 0;
 }
