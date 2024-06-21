@@ -1,9 +1,9 @@
 import './App.css';
-import Button from "@material-ui/core/Button";
-import { IconButton } from '@material-ui/core';
-import TextField from '@material-ui/core/TextField';
-import AssignmentIcon from "@material-ui/icons/Assignment";
-import PhoneIcon from "@material-ui/icons/Phone";
+import Button from "@mui/material/Button";
+import { IconButton } from '@mui/material';
+import TextField from '@mui/material/TextField';
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import PhoneIcon from "@mui/icons-material/Phone";
 import { CopyToClipboard} from "react-copy-to-clipboard";
 import Peer from "simple-peer";
 import io from "socket.io-client";
@@ -11,15 +11,16 @@ import React, {useRef, useEffect} from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import allActions from './actions';
 
-import VideocamIcon from '@material-ui/icons/Videocam';
-import VideocamOffIcon from '@material-ui/icons/VideocamOff';
-import MenuIcon from '@material-ui/icons/Menu';
-import MenuOpenIcon from '@material-ui/icons/MenuOpen';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import VideocamOffIcon from '@mui/icons-material/VideocamOff';
+import MenuIcon from '@mui/icons-material/Menu';
+import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 
-import MicIcon from '@material-ui/icons/Mic';
-import MicOffIcon from '@material-ui/icons/MicOff';
-import ChatIcon from '@material-ui/icons/Chat';
-import MarkUnreadChatAltIcon from '@material-ui/icons/MarkUnreadChatAlt';
+import MicIcon from '@mui/icons-material/Mic';
+import MicOffIcon from '@mui/icons-material/MicOff';
+import ChatIcon from '@mui/icons-material/Chat';
+
+import { red } from '@mui/material/colors';
 
 const socket = io.connect("http://localhost:5000");
 
@@ -40,6 +41,8 @@ function App() {
   const message = useSelector(state => state.message);
   const messageLog = useSelector(state => state.messageLog);
   const isNewMessage = useSelector(state => state.isNewMessage);
+  const userName = useSelector(state => state.userName);
+  const numUnseenMessages = useSelector(state => state.numUnseenMessages);
 
   const myVideo = useRef();
   const userVideo = useRef();
@@ -56,9 +59,10 @@ function App() {
     //console.log(allActions.streamActions)
 
     const handlerFunc = (dispatch) => (data) => {
+      //console.log("whose name is this", data.name)
       dispatch(allActions.receivingCallActions.setReceivingCall(true))
       dispatch(allActions.callerActions.setCaller(data.from));
-      dispatch(allActions.nameActions.setName(data.name));
+      dispatch(allActions.userNameActions.setUserName(data.name));
       dispatch(allActions.callerSignalActions.setCallerSignal(data.signal));
       //console.log("receivingCall:", receivingCall)
       //console.log("callAccepted:", callAccepted)
@@ -75,22 +79,19 @@ function App() {
       await dispatch(allActions.meActions.setID(id))
     })
 
-    /*
-    socket.on("callUser", async (data) => {
-      await dispatch(allActions.receivingCallActions.setReceivingCall(true))
-      await dispatch(allActions.callerActions.setCaller(data.from));
-      await dispatch(allActions.nameActions.setName(data.name));
-      await dispatch(allActions.callSignalActions.setCallerSignal(data.signal));
-      console.log("callSignal after supposedly updating:", receivingCall)
-    })
-    */
-
     socket.on("callUser", handlerFunc(dispatch));
 
     socket.on("messageSent", (data) => {
       //console.log("dataReceived", data);
       dispatch(allActions.messageLogActions.setMessageLog(data))
-      dispatch(allActions.isNewMessageActions.setIsNewMessage(true))
+
+      //check logic here
+      if (showSidebar === false) {
+        dispatch(allActions.numUnseenMessagesActions.incNumUnseenMessages())
+        dispatch(allActions.isNewMessageActions.setIsNewMessage(true))
+      } else {
+        dispatch(allActions.isNewMessageActions.setIsNewMessage(false))
+      }
       //console.log("messageLog", messageLog);
     })
 
@@ -106,7 +107,9 @@ function App() {
 
   const callUser = (id) => {
     dispatch(allActions.callEndedActions.setCallEnded(false))
+
     console.log("id", id)
+
     const peer = new Peer({
       initiator: true,
       trickle: false,
@@ -127,15 +130,17 @@ function App() {
       userVideo.current.srcObject = stream;
     })
 
-    socket.on("callAccepted", (signal) => {
+    socket.on("callAccepted", (data) => {
+      console.log("trying to reach caller")
       dispatch(allActions.callAcceptedActions.setCallAccepted(true));
-      peer.signal(signal)
+      dispatch(allActions.userNameActions.setUserName(data.name));
+      peer.signal(data.signal)
     })
 
     connectionRef.current = peer;
 
     peer.on('close', () => { console.log('peer closed'); socket.off("callAccepted"); });
-    peer.on('error', () => { console.log("error occured when closing ")});
+    peer.on('error', (error) => { console.log("error occured when closing  (Call User)", error)});
   }
 
   const answerCall = () => {
@@ -151,7 +156,8 @@ function App() {
     peer.on("signal", (data) => {
       socket.emit("answerCall", {
         to: caller,
-        signal: data
+        signal: data,
+        name: name
       })
     })
 
@@ -169,7 +175,7 @@ function App() {
     peer.signal(callerSignal)
     connectionRef.current = peer
     peer.on('close', () => { console.log('peer closed'); socket.off("callAccepted"); });
-    peer.on('error', () => { console.log("error occured when closing ")});
+    peer.on('error', (error) => { console.log("error occured when closing (Answer Call)", error)});
   }
 
   const leaveCall = () => {
@@ -183,13 +189,16 @@ function App() {
     dispatch(allActions.receivingCallActions.setReceivingCall(false))
     dispatch(allActions.messageActions.setMessage(""))
     dispatch(allActions.messageLogActions.resetMessageLog())
+    dispatch(allActions.numUnseenMessagesActions.setNumUnseenMessages(0))
+    //dispatch(allActions.callerSignalActions.setCallerSignal(null));
 
     if (payload.to !== '') {
       socket.emit("endCall", payload);
     }
 
     //console.log("userVideo before calling destroy:", userVideo)
-    if (connectionRef && connectionRef.current && connectionRef.current.destroy === "function") {
+    if (connectionRef && connectionRef.current) {
+      console.log("destroying connection")
       connectionRef.current.destroy()
     }
     //console.log("userVideo after calling destroy:", userVideo)
@@ -234,6 +243,7 @@ function App() {
   const updateMessageIcon = () => {
     dispatch(allActions.showChatActions.setShowChat(!showChat))
     dispatch(allActions.isNewMessageActions.setIsNewMessage(false))
+    dispatch(allActions.numUnseenMessagesActions.setNumUnseenMessages(0))
   }
 
   return (
@@ -254,33 +264,59 @@ function App() {
           <div className='chat'>
             {/*console.log('showChat', showChat)*/}
             {/*console.log("updating messageLog in Send Message", messageLog)*/}
-            {showChat === false && isNewMessage === false &&
-              <IconButton color="primary" onClick={() => {updateMessageIcon}}>
+            {/* showChat === false && isNewMessage === false &&
+              <IconButton color="primary" onClick={updateMessageIcon}>
                 <ChatIcon fontSize="large"></ChatIcon>  
               </IconButton>  
-            }
-            {showChat === false && isNewMessage === true &&
-              <IconButton color="primary" onClick={() => {updateMessageIcon}}>
+            */}
+            {/*showChat === false && isNewMessage === true &&
+              <IconButton color="primary" onClick={updateMessageIcon}>
                 <MarkUnreadChatAltIcon fontSize="large"></MarkUnreadChatAltIcon>  
               </IconButton>
+            */
+            
+            //() => {dispatch(allActions.showChatActions.setShowChat(!showChat))}
             }
 
             <div className={showChat ? 'chatSidebar active': 'chatSidebar'}>
               <div className="openChatIcon"> 
-                <IconButton color="primary" onClick={() => {dispatch(allActions.showChatActions.setShowChat(!showChat))}}>
-                  <ChatIcon fontSize="large"></ChatIcon>  
-                </IconButton>
+                {console.log(isNewMessage)}
+                {showChat === false && isNewMessage === true ?
+                  <div>
+                    {numUnseenMessages > 0 &&
+                      <div className='circleWrapper'>
+                        {/*console.log("numUnseenMessages", numUnseenMessages)*/}
+                        <span className='circleText'>{numUnseenMessages}</span> 
+                      </div>
+                    }
+                    <IconButton color="primary" onClick={updateMessageIcon}>
+                      <ChatIcon fontSize="large"> 
+                      </ChatIcon>  
+                    </IconButton>
+                  </div>
+                  :
+                  <IconButton color="primary" onClick={updateMessageIcon}>
+                    <ChatIcon fontSize="large"></ChatIcon>  
+                  </IconButton>
+                }
               </div>
+              {userName &&
+                <div className='name'>{userName}</div>
+              }
               <div className='chatBoxContainer'>
                   <ul className='chatBox'>
                     {/*console.log("pressure, push it down on me", messageLog.length > 0)*/}
                     {messageLog.length > 0 && messageLog.map((messageObj, index) => (
                       ((messageLog.length - 1 !== index) ? 
                       <li className={messageObj.from === me ? "messageBubble my": "messageBubble user"}>
-                        {messageObj.message}
+                        <div className={messageObj.message === "" ? "emptyMessage": ""}>
+                          {messageObj.message}
+                        </div>
                       </li> :
                       <li className={messageObj.from === me ? "messageBubble my": "messageBubble user"} ref={messagesEndRef}>
-                        {messageObj.message}
+                        <div className={messageObj.message === "" ? "emptyMessage": ""}>
+                          {messageObj.message}
+                        </div>
                       </li>)
                     ))}
                   </ul>
@@ -291,6 +327,10 @@ function App() {
                            id="chatMessage"
                            value={message}
                            onChange={(e) => dispatch(allActions.messageActions.setMessage(e.target.value))} 
+                           onKeyDown={(e) => {
+                            if (e.key === "Enter")
+                                sendMessage(message)
+                            }}
                     />
                     <button className='inputButton' onClick={() => {sendMessage(message)}}>Send</button>
                   </div>
@@ -357,7 +397,7 @@ function App() {
 
             <div className='call-button'>
               {callAccepted && !callEnded ? (
-                <IconButton color="secondary" variant="contained" aria-label="end" onClick={leaveCall}>
+                <IconButton sx={{ color: red[600] }} variant="contained" aria-label="end" onClick={leaveCall}>
                     <PhoneIcon fontSize='large'/>
                 </IconButton>
               ) : 
@@ -372,7 +412,7 @@ function App() {
         {receivingCall && !callAccepted ? 
           (<div id="popup1" className="caller overlay">
               <div className="popup">
-                <h1>{name} is calling...</h1>
+                <h1>{userName} is calling...</h1>
                 <div className="content">
                   <Button variant="contained" color="primary" onClick={answerCall}>
                     Answer

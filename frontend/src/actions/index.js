@@ -14,6 +14,8 @@ import showChatActions from "./showChatActions";
 import messageActions from "./messageActions";
 import messageLogActions from "./messageLogActions";
 import isNewMessageActions from "./isNewMessageActions";
+import userNameActions from "./userNameActions";
+import numUnseenMessagesActions from "./numUnseenMessagesActions";
 
 const allActions = {
     receivingCallActions,
@@ -31,7 +33,9 @@ const allActions = {
     showChatActions,
     messageActions,
     messageLogActions,
-    isNewMessageActions
+    isNewMessageActions,
+    userNameActions,
+    numUnseenMessagesActions
 }
 
 export default allActions;

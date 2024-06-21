@@ -160,25 +160,6 @@ body {
   transition: 350ms;
 }
 
-
-@media screen and (max-width: 1000px) {
-  .myId {
-    width: 200px;
-  }
-}
-
-@media screen and (max-width: 800px) {
-  .myId {
-    width: 160px;
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .myId {
-     width: 120px;
-  }
-}
-
 .menuContainer {
   background-color: alice;
   width: 100%;
@@ -189,12 +170,13 @@ body {
 }
 
 .popup {
-  margin: 20% auto;
+  margin: 0 auto;
   padding: 20px;
   background: #fff;
   border-radius: 10px;
   width: 300px;
   position: relative;
+  top: 30%;
 }
 
 .popup h1 {
@@ -218,7 +200,7 @@ body {
 .chatSidebar {
   position: fixed;
   background-color: white;
-  width: 300px;
+  width: 320px;
   height: 100vh;
   top: 0;
   right: -100%;
@@ -232,6 +214,12 @@ body {
   */
   right: 0;
   transition: 350ms;
+}
+
+.name {
+  position: absolute;
+  top: 35px;
+  left: 20px;
 }
 
 .openChatIcon {
@@ -304,7 +292,13 @@ ul {
   margin-bottom: 12px;
   border-radius: .4em;
   padding: 12px;
+  white-space: normal;
+  word-wrap: break-word;
   /* max-height: auto; */
+}
+
+.emptyMessage {
+  padding: 5px;
 }
 
 .user {
@@ -345,4 +339,141 @@ ul {
 	border-left-color: rgb(122, 184, 253);
 	border-right: 0;
 	border-bottom: 0;
+}
+
+.circleWrapper {
+  position: absolute;
+  top: 0;
+  right: 0px;
+  background-color: red;
+  color: white;
+  z-index: 1;
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  text-align: center;
+}
+
+.circleText {
+  position: absolute;
+  transform: translate(-50% , 3%);
+}
+
+/* Responsive Logic */
+@media screen and (max-width: 1000px) {
+  .myId {
+    width: 200px;
+  }
+
+  .chatSidebar { 
+    width: 250px;
+  }
+
+  .inputField {
+    font-size: 16px;
+    padding-left: 7px;
+  }
+  
+  .inputButton {
+    font-size: 16px;
+  } 
+
+  .messageBubble {
+    font-size: 15px;
+    width: 92%;
+    padding: 12px;
+  }
+  
+  .my {
+    margin-left: 3px;
+  }
+
+  .my:before {
+    top: 15px;
+  }
+
+  .user:before {
+    top: 15px;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .myId {
+    width: 160px;
+  }
+
+  .chatSidebar {
+    width: 220px;
+  }
+
+  .inputField {
+    font-size: 15px;
+    padding-left: 5px;
+  }
+  
+  .inputButton {
+    font-size: 15px;
+  }  
+
+  .messageBubble {
+    font-size: 15px;
+    width: 90%;
+    padding: 15px;
+  }   
+
+  .my {
+    margin-left: 3px;
+  }
+
+  .my:before {
+    top: 15px;
+  }
+
+  .user:before {
+    top: 15px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .myId {
+     width: 120px;
+  }
+
+  .chatSidebar {
+    width: 140px;
+  }
+
+  .inputField {
+    font-size: 10px;
+    padding-left: 3px;
+  }
+  
+  .inputButton {
+    font-size: 10px;
+  }  
+
+  .messageBubble {
+    font-size: 12px;
+    width: 83%;
+    padding: 12px;
+  }
+
+  .my:before {
+    top: 11px;
+  }
+
+  .user:before {
+    top: 10px;
+  }
+
+  .name {
+    font-size: 12px;
+    top: 42px;
+  }
+}
+
+@media screen and (max-height: 300px) {
+  .myId {
+    overflow-y: scroll;
+  }
 }

@@ -14,6 +14,8 @@ import showChatReducer from "./showChat";
 import messageReducer from "./message";
 import messageLogReducer from "./messageLog";
 import isNewMessageReducer from "./isNewMessage";
+import userNameReducer from "./userName";
+import numUnseenMessagesReducer from "./numUnseenMessages";
 
 import {combineReducers} from 'redux';
 
@@ -33,7 +35,9 @@ const allReducers = combineReducers({
     showChat: showChatReducer,
     message: messageReducer,
     messageLog: messageLogReducer,
-    isNewMessageReducer: isNewMessageReducer
+    isNewMessage: isNewMessageReducer,
+    userName: userNameReducer,
+    numUnseenMessages: numUnseenMessagesReducer
 });
 
 export default allReducers;

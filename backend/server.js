@@ -24,17 +24,17 @@ io.on("connection", (socket) => {
     })
 
     socket.on("answerCall", (data) => {
-        io.to(data.to).emit("callAccepted", data.signal)
+        io.to(data.to).emit("callAccepted", data)
     })
 
     socket.on("message", (data) => {
-        console.log(data);
-        console.log("now sending this information to other user");
+        //console.log(data);
+        //console.log("now sending this information to other user");
         io.to(data.to).emit("messageSent", data);
     })
 
     socket.on("endCall", (data) => {
-        console.log(data);
+        //console.log(data);
         io.to(data.to).emit("endCall");
     })
 })
