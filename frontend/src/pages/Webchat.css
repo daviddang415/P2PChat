@@ -1,0 +1,480 @@
+
+body, html {
+    margin: 0;
+    padding: 0;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    min-height: 300px;
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+  
+  .container {
+    position: relative;
+    background-color: black;
+  }
+  
+  /* My Video and User Video */
+  .myVideo {
+    height: 100vh;
+  }
+  
+  .userVideo video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /*object-fit: cover;*/
+    /*transition: 850ms;*/
+  }
+  
+  .myVideo video {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    /*object-fit: cover;*/
+    transition: 850ms;
+    border-radius: 15px;
+  }
+  
+  .myVideo.active video {
+    position: fixed;
+    top: 15px;
+    left: 20px;
+    width: 12vw; 
+    height: 12vw;
+    transition: 350ms;
+    z-index: 1;
+    border: solid aliceblue 3px;
+    object-fit: cover;
+  }
+  
+  .video-player {
+    background-color: black;
+    width: 100%;
+    height: 300px;
+  }
+  
+  /* Camera, Audio, and Phone Call Control Panel */
+  .controlPanelContainer {
+    position: fixed;  
+    left: 0;
+    right: 0;
+    transform: translateY(-125%);
+    width: 200px;
+    border-radius: 15px;
+    margin: 0 auto;
+    /* border: solid red; */
+  }
+  
+  .controlPanel {
+    /*
+    position: fixed;  
+    left: 0;
+    right: 0;
+    transform: translateY(-125%);
+    */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px; 
+    border-radius: 15px;
+    background-color: white;
+  
+    visibility: hidden;
+    opacity: 0;
+    transition: 
+        visibility 0.5s, opacity 0.5s ease;
+  }
+  
+  .controlPanelContainer:hover .controlPanel{
+    visibility: visible;
+    opacity: 1;
+    /* border: solid black; */
+  }
+  
+  .controlPanel2 {
+    position: absolute;  
+    left: 0;
+    right: 0;
+    transform: translateY(-125%);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 200px;
+    border-radius: 15px;
+    padding: 5px; 
+    margin: 0 auto;
+    background-color: white;
+    /* border: solid black; */
+  }
+  
+  .overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    transition: opacity 500ms;
+    visibility: visible;
+    opacity: 1;
+    /* border: solid black; */
+  }
+  
+  /* Menu and Sidebar */
+  .menu {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+  }
+  
+  
+  .menuBtn {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    /*z-index: 1;*/
+  }
+  
+  .myId {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    background-color: white;
+    width: 300px;
+    height: 100vh;
+    position: fixed;
+    left: -100%;
+    transition: 850ms;
+  }
+  
+  .myId.active{
+    left: 0;
+    transition: 350ms;
+  }
+  
+  .menuContainer {
+    background-color: alice;
+    width: 100%;
+    height: 100%;
+    height: 100vh;
+    z-index: -1;
+    transition: 1s ease-in-out;
+  }
+  
+  .popup {
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    width: 300px;
+    position: relative;
+    top: 30%;
+  }
+  
+  .popup h1 {
+    margin-top: 0;
+    color: #333;
+    font-family: Tahoma, Arial, sans-serif;
+  }
+  
+  .popup .content {
+    max-height: 30%;
+    overflow: auto;
+  }
+  
+  /* Chat and Chatbox */
+  .chat {
+    position: fixed;
+    top: 0;
+    right: 0;
+  }
+  
+  .chatSidebar {
+    position: fixed;
+    background-color: white;
+    width: 320px;
+    height: 100vh;
+    top: 0;
+    right: -100%;
+    transition: 850ms;
+  }
+  
+  .chatSidebar.active {
+    /*
+    display: flex;
+    flex-direction: column;
+    */
+    right: 0;
+    transition: 350ms;
+  }
+  
+  .name {
+    position: absolute;
+    top: 35px;
+    left: 20px;
+    font-weight: bold;
+  }
+  
+  .openChatIcon {
+    position: fixed;
+    top: 0;
+    right: 0;
+  }
+  
+  .chatBoxContainer {
+    position: relative;
+    margin-top: 60px;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 90vh;
+  }
+  
+  .chatBox {
+    position: relative;
+    border: solid black;
+    border-bottom: none;
+    background-color: aliceblue;
+    height: 91%;
+    border-top-left-radius: 15px;
+    /* border-radius: 15px; */
+    padding-left: 0px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  
+  .chatSend {
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
+    height: 60px;
+  }
+  
+  .inputField {
+    width: 85%;
+    height: 100%;
+    /* border-radius: 15px; */
+    border-bottom-left-radius: 15px;
+    border: solid black;
+    font-size: 16px;
+    padding-left: 16px;
+  }
+  
+  .inputButton {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border: solid black;
+    background-color: lightgrey;
+    border-bottom-right-radius: 15px;
+    height: 100%;
+    font-size: 16px;
+  }
+  
+  .inputButton:hover {
+    background-color: grey;
+    cursor: pointer;
+  }
+  
+  ul {
+    list-style: none;
+  }
+  
+  .messageBubble {
+    width: 93%;
+    margin-top: 12px;
+    margin-bottom: 12px;
+    border-radius: .4em;
+    padding: 12px;
+    white-space: normal;
+    word-wrap: break-word;
+    /* max-height: auto; */
+  }
+  
+  .emptyMessage {
+    padding: 8px;
+  }
+  
+  .user {
+    position: relative;
+    border: solid grey;
+    background-color: grey;
+    margin-left: 14px;
+  }
+  
+  .user:before {
+    position: absolute;
+    left: -16px;
+    top: 11px;
+    content:"";
+    width: 0;
+      height: 0;
+      border: 20px solid transparent;
+      border-right-color: grey;
+      border-left: 0;
+      border-bottom: 0;
+  }
+  
+  .my {
+    position: relative;
+    border: solid rgb(122, 184, 253);
+    background-color: rgb(122, 184, 253);
+    margin-left: 5px;
+  }
+  
+  .my:before {
+    position: absolute;
+    right: -17px;
+    top: 10px;
+    content:"";
+      width: 0;
+      height: 0;
+      border: 20px solid transparent;
+      border-left-color: rgb(122, 184, 253);
+      border-right: 0;
+      border-bottom: 0;
+  }
+  
+  .circleWrapper {
+    position: absolute;
+    top: 0;
+    right: 0px;
+    background-color: red;
+    color: white;
+    z-index: 1;
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    text-align: center;
+  }
+  
+  .circleText {
+    position: absolute;
+    transform: translate(-50% , 3%);
+  }
+  
+  /* Responsive Logic */
+  @media screen and (max-width: 1000px) {
+    .myId {
+      width: 200px;
+    }
+  
+    .chatSidebar { 
+      width: 250px;
+    }
+  
+    .inputField {
+      font-size: 16px;
+      padding-left: 7px;
+    }
+    
+    .inputButton {
+      font-size: 16px;
+    } 
+  
+    .messageBubble {
+      font-size: 15px;
+      width: 92%;
+      padding: 12px;
+    }
+    
+    .my {
+      margin-left: 3px;
+    }
+  
+    .my:before {
+      top: 15px;
+    }
+  
+    .user:before {
+      top: 15px;
+    }
+  }
+  
+  @media screen and (max-width: 800px) {
+    .myId {
+      width: 160px;
+    }
+  
+    .chatSidebar {
+      width: 220px;
+    }
+  
+    .inputField {
+      font-size: 15px;
+      padding-left: 5px;
+    }
+    
+    .inputButton {
+      font-size: 15px;
+    }  
+  
+    .messageBubble {
+      font-size: 15px;
+      width: 90%;
+      padding: 15px;
+    }   
+  
+    .my {
+      margin-left: 3px;
+    }
+  
+    .my:before {
+      top: 15px;
+    }
+  
+    .user:before {
+      top: 15px;
+    }
+  }
+  
+  @media screen and (max-width: 600px) {
+    .myId {
+       width: 120px;
+    }
+  
+    .chatSidebar {
+      width: 140px;
+    }
+  
+    .inputField {
+      font-size: 10px;
+      padding-left: 3px;
+    }
+    
+    .inputButton {
+      font-size: 10px;
+    }  
+  
+    .messageBubble {
+      font-size: 12px;
+      width: 83%;
+      padding: 12px;
+    }
+  
+    .my:before {
+      top: 11px;
+    }
+  
+    .user:before {
+      top: 10px;
+    }
+  
+    .name {
+      font-size: 12px;
+      top: 42px;
+    }
+  }
+  
+  @media screen and (max-height: 300px) {
+    .myId {
+      overflow-y: scroll;
+    }
+  }
