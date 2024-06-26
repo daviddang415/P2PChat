@@ -308,12 +308,12 @@ function App() {
                     {/*console.log("pressure, push it down on me", messageLog.length > 0)*/}
                     {messageLog.length > 0 && messageLog.map((messageObj, index) => (
                       ((messageLog.length - 1 !== index) ? 
-                      <li className={messageObj.from === me ? "messageBubble my": "messageBubble user"}>
+                      <li className={messageObj.from === me ? "messageBubble my": "messageBubble user"} key={index}>
                         <div className={messageObj.message === "" ? "emptyMessage": ""}>
                           {messageObj.message}
                         </div>
                       </li> :
-                      <li className={messageObj.from === me ? "messageBubble my": "messageBubble user"} ref={messagesEndRef}>
+                      <li className={messageObj.from === me ? "messageBubble my": "messageBubble user"} key={index} ref={messagesEndRef}>
                         <div className={messageObj.message === "" ? "emptyMessage": ""}>
                           {messageObj.message}
                         </div>

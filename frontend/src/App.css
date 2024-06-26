@@ -220,6 +220,7 @@ body {
   position: absolute;
   top: 35px;
   left: 20px;
+  font-weight: bold;
 }
 
 .openChatIcon {
@@ -298,7 +299,7 @@ ul {
 }
 
 .emptyMessage {
-  padding: 5px;
+  padding: 8px;
 }
 
 .user {
