@@ -1,6 +1,6 @@
 .pageContainer { 
     height: 100vh;
-    background-image: linear-gradient(to bottom right, #1976d2, purple);
+    background-image: linear-gradient(to bottom right, #1976d2, violet);
 
     display: flex;
     flex-direction: column;
