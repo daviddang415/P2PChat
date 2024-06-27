@@ -48,6 +48,7 @@ Once ran, the webpage can be found at [http://localhost:3000/](http://localhost:
 
 ### Frontend
 * [React](https://react.dev/) - Frontend Javascript library
+* [Redux](https://redux.js.org/) - Javascript library for global state management
 * [Matrial UI](https://mui.com/material-ui/) - React component library
 * [Simple-Peer](https://github.com/feross/simple-peer) - WebRTC library that facilitates video and audio communication between clients
 * [Socket.IO](https://socket.io/) - Javascript library that establishes real-time connection with a server and a client to exhange data between clients
