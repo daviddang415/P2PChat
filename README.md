@@ -14,7 +14,7 @@ git clone https://github.com/daviddang415/P2PChat.git
 
 ### Running application
 
-The application utilizes docker to easily build and run the webpage
+The application utilizes [docker](https://www.docker.com/) to easily build and run the webpage
 
 Create a docker image of the ```backend``` directory:
 
